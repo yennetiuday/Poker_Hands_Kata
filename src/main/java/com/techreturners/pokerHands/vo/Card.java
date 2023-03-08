@@ -3,15 +3,17 @@ package com.techreturners.pokerHands.vo;
 import java.util.Objects;
 
 public class Card {
-    private String value;
+    private int value;
+
+    private CardValue cardValue;
     private String suit;
 
-    public Card(String value, String suit) {
+    public Card(int value, String suit) {
         this.value = value;
         this.suit = suit;
     }
 
-    public String getValue() {
+    public int getValue() {
         return value;
     }
 
@@ -19,12 +21,12 @@ public class Card {
         return suit;
     }
 
-    public static Card parse(String cardValue) {
-        if(Objects.nonNull(cardValue) && cardValue.length() == 2) {
-            return new Card(cardValue.substring(0,1), cardValue.substring(1));
-        } else {
-            return null;
+    public static Card parse(String cardString) {
+        if(Objects.nonNull(cardString) && cardString.length() == 2) {
+            CardValue cardValue = new CardValue(cardString.substring(0,1));
+            return new Card(cardValue.getValue(), cardString.substring(1));
         }
+        return null;
     }
 
     @Override
