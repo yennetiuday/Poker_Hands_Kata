@@ -2,7 +2,7 @@ package com.techreturners.pokerHands.vo;
 
 import java.util.Objects;
 
-public class Card {
+public class Card implements Comparable<Card>{
     private final int value;
     private final CardValue cardValue;
     private final CardSuit suit;
@@ -39,5 +39,12 @@ public class Card {
                 "value='" + value + '\'' +
                 ", suit='" + suit + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Card card) {
+        if(value == card.getValue()) return 0;
+        else if (value > card.getValue()) return 1;
+        else return -1;
     }
 }

@@ -20,11 +20,11 @@ class PlayerTest {
         expectedPlayers.add(new Player("Black", Arrays.asList(blackHandCards)));
         expectedPlayers.add(new Player("White", Arrays.asList(whiteHandCards)));
 
-        assertEquals(expectedPlayers.get(0).getName(), players.get(0).getName());
-        assertEquals(expectedPlayers.get(0).getHand().size(), players.get(0).getHand().size());
-        assertEquals(expectedPlayers.get(0).getHand(), players.get(0).getHand());
-        assertEquals(expectedPlayers.get(1).getName(), players.get(1).getName());
-        assertEquals(expectedPlayers.get(1).getHand().size(), players.get(1).getHand().size());
-        assertEquals(expectedPlayers.get(1).getHand(), players.get(1).getHand());
+        assertEquals(expectedPlayers.get(0).name(), players.get(0).name());
+        assertEquals(expectedPlayers.get(0).hand().size(), players.get(0).hand().size());
+        assertEquals(expectedPlayers.get(0).hand(), players.get(0).hand());
+        assertEquals(expectedPlayers.get(1).name(), players.get(1).name());
+        assertEquals(expectedPlayers.get(1).hand().size(), players.get(1).hand().size());
+        assertEquals(expectedPlayers.get(1).hand(), players.get(1).hand());
     }
 }
