@@ -11,6 +11,7 @@ class CardTest {
         Card actualCard = Card.parse("5C");
         Card expectedCard = new Card(5, "C");
         assertEquals(expectedCard.getValue(), actualCard.getValue());
+        assertEquals(expectedCard.getCardValue().getDisplay(), actualCard.getCardValue().getDisplay());
         assertEquals(expectedCard.getSuit(), actualCard.getSuit());
     }
 }

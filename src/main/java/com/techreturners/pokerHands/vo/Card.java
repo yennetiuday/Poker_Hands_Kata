@@ -3,21 +3,25 @@ package com.techreturners.pokerHands.vo;
 import java.util.Objects;
 
 public class Card {
-    private int value;
-
-    private CardValue cardValue;
-    private String suit;
+    private final int value;
+    private final CardValue cardValue;
+    private final CardSuit suit;
 
     public Card(int value, String suit) {
-        this.value = value;
-        this.suit = suit;
+        this.cardValue = new CardValue(value);
+        this.value = this.cardValue.getValue();
+        this.suit = CardSuit.of(suit).get();
     }
 
     public int getValue() {
         return value;
     }
 
-    public String getSuit() {
+    public CardValue getCardValue() {
+        return cardValue;
+    }
+
+    public CardSuit getSuit() {
         return suit;
     }
 

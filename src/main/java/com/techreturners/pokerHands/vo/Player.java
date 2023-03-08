@@ -6,12 +6,12 @@ import java.util.List;
 
 public class Player {
 
-    private static final String PLAYER_HANDS_SEPARATOR = "  ";
+    private static final String PLAYER_HANDS_SEPARATOR = " {2}";
     private static final String HANDS_SEPARATOR = ": ";
     private static final String CARDS_SEPARATOR = " ";
 
-    private String name;
-    private List<String> hand;
+    private final String name;
+    private final List<String> hand;
 
     public Player(String name, List<String> hand) {
         this.name = name;
