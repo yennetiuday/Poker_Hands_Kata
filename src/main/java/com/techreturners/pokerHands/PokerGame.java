@@ -1,9 +1,8 @@
 package com.techreturners.pokerHands;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.techreturners.pokerHands.vo.Player;
+
+import java.util.*;
 
 public class PokerGame {
 
@@ -12,22 +11,22 @@ public class PokerGame {
 
     private static final String CARDS_SEPARATOR = " ";
 
-    private Map<String, List<String>> pokerHands;
+    private List<Player> players;
 
-    public Map<String, List<String>> getPokerHands() {
-        return pokerHands;
+    public List<Player> getPlayers() {
+        return players;
     }
 
-    public void setPokerHands(Map<String, List<String>> pokerHands) {
-        this.pokerHands = pokerHands;
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 
     public void parseHands(String hands) {
-        pokerHands = new HashMap<>();
+        players = new ArrayList<>();
         String[] playersHands = hands.split(PLAYER_HANDS_SEPARATOR);
         for (String playerHand: playersHands) {
             String[] playerAndCards = playerHand.split(HANDS_SEPARATOR);
-            pokerHands.put(playerAndCards[0], Arrays.asList(playerAndCards[1].split(CARDS_SEPARATOR)));
+            players.add(new Player(playerAndCards[0], Arrays.asList(playerAndCards[1].split(CARDS_SEPARATOR))));
         }
     }
 }
