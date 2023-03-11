@@ -4,10 +4,7 @@ package com.techreturners.pokerHands.service;
 import com.techreturners.pokerHands.vo.Card;
 import com.techreturners.pokerHands.vo.CardValue;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -15,7 +12,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
 
     public static final Long PAIR = 2L;
     public static final Long THREE_OF_KIND = 3L;
-    public static final Long FULL_HOUSE = 4L;
+    public static final Long FOUR_OF_KIND = 4L;
     public static final Integer TWO_PAIRS = 2;
 
     @Override
@@ -44,11 +41,24 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     }
 
     @Override
-    public String getFullHouseCard(List<Card> hand) {
+    public Map<Long, String> getFullHouseCards(List<Card> hand) {
+        Map<Long, String> fullHouse = new LinkedHashMap<>();
+        fullHouse.put(THREE_OF_KIND, getThreeOfKindCard(hand));
+        fullHouse.put(PAIR, getPairCard(hand));
+        return fullHouse;
+    }
+
+    @Override
+    public String getFourOfKind(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
         return cardCounts.entrySet().stream()
-                .filter(e -> Objects.equals(e.getValue(), FULL_HOUSE))
+                .filter(e -> Objects.equals(e.getValue(), FOUR_OF_KIND))
                 .map(Map.Entry::getKey).toList().get(0);
+    }
+
+    @Override
+    public String getStraightCard(List<Card> hand) {
+        return null;
     }
 
     private Map<String, Long> countCards(List<Card> cards) {

@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,14 +68,40 @@ class PlayerHandTypeTest {
     }
 
     @Test
-    void testIdentifyFullHouseCard() {
+    void testIdentifyFourOfKindCard() {
         List<Card> cards = Arrays.asList(Card.parse("2H"),
                 Card.parse("3C"),
                 Card.parse("3S"),
                 Card.parse("3H"),
                 Card.parse("3D"));
 
-        assertEquals("3", playerHandType.getFullHouseCard(cards));
+        assertEquals("3", playerHandType.getFourOfKind(cards));
+    }
+
+    @Test
+    void testIdentifyFullHouseCards() {
+        List<Card> cards = Arrays.asList(Card.parse("2H"),
+                Card.parse("3C"),
+                Card.parse("3S"),
+                Card.parse("3H"),
+                Card.parse("2D"));
+
+        Map<Long, String> expectedFullHouseCards = new LinkedHashMap<>();
+        expectedFullHouseCards.put(3L, "3");
+        expectedFullHouseCards.put(2L, "2");
+
+        assertEquals(expectedFullHouseCards, playerHandType.getFullHouseCards(cards));
+    }
+
+    
+    void testIdentifyStraightCards() {
+        List<Card> cards = Arrays.asList(Card.parse("2H"),
+                Card.parse("3C"),
+                Card.parse("4S"),
+                Card.parse("5H"),
+                Card.parse("6D"));
+        List<String> expectedStraight = Arrays.asList("2", "3", "4", "5", "6");
+        assertEquals(expectedStraight, playerHandType.getStraightCard(cards));
     }
 
 }
