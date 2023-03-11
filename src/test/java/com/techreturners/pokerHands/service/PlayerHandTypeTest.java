@@ -65,4 +65,15 @@ class PlayerHandTypeTest {
         assertEquals("3", playerHandType.getThreeOfKindCard(cards));
     }
 
+    @Test
+    void testIdentifyFullHouseCard() {
+        List<Card> cards = Arrays.asList(Card.parse("2H"),
+                Card.parse("3C"),
+                Card.parse("3S"),
+                Card.parse("3H"),
+                Card.parse("3D"));
+
+        assertEquals("3", playerHandType.getFullHouseCard(cards));
+    }
+
 }

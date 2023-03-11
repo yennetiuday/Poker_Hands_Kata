@@ -14,9 +14,8 @@ import java.util.stream.Collectors;
 public class PlayerHandTypeImpl implements PlayerHandType{
 
     public static final Long PAIR = 2L;
-
     public static final Long THREE_OF_KIND = 3L;
-    public static final Integer SINGLE_PAIR = 1;
+    public static final Long FULL_HOUSE = 4L;
     public static final Integer TWO_PAIRS = 2;
 
     @Override
@@ -40,9 +39,16 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     public String getThreeOfKindCard(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
         return cardCounts.entrySet().stream()
-                .filter(e-> Objects.equals(e.getValue(), THREE_OF_KIND))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList()).get(0);
+                .filter(e -> Objects.equals(e.getValue(), THREE_OF_KIND))
+                .map(Map.Entry::getKey).toList().get(0);
+    }
+
+    @Override
+    public String getFullHouseCard(List<Card> hand) {
+        Map<String, Long> cardCounts = countCards(hand);
+        return cardCounts.entrySet().stream()
+                .filter(e -> Objects.equals(e.getValue(), FULL_HOUSE))
+                .map(Map.Entry::getKey).toList().get(0);
     }
 
     private Map<String, Long> countCards(List<Card> cards) {
