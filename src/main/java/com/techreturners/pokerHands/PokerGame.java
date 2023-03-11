@@ -6,8 +6,6 @@ import java.util.*;
 
 public class PokerGame {
 
-
-
     private List<Player> players;
 
     public List<Player> getPlayers() {
@@ -17,4 +15,6 @@ public class PokerGame {
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
+
+
 }

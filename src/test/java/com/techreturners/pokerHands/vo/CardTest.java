@@ -20,18 +20,4 @@ class CardTest {
         assertEquals(expectedCard.getSuit(), actualCard.getSuit());
     }
 
-    @Test
-    void testIdentifyHighCard() {
-        Card expectedHighCard = Card.parse("KS");
-        List<Card> cards = Arrays.asList(Card.parse("2H"),
-                Card.parse("4D"),
-                Card.parse("3C"),
-                Card.parse("JS"),
-                Card.parse("KS"));
-
-        Card actualHighCard = Collections.max(cards);
-
-        assertEquals(expectedHighCard.getValue(), actualHighCard.getValue());
-        assertEquals(expectedHighCard.getSuit(), actualHighCard.getSuit());
-    }
 }

@@ -1,6 +1,6 @@
 package com.techreturners.pokerHands;
 
-import com.techreturners.pokerHands.vo.Player;
+import com.techreturners.pokerHands.vo.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,4 +16,8 @@ class PokerGameTest {
     void setUp() {
         game = new PokerGame();
     }
+
+
+
+
 }
