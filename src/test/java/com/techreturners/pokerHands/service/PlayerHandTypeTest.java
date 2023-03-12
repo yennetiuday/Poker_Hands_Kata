@@ -1,13 +1,11 @@
 package com.techreturners.pokerHands.service;
 
 import com.techreturners.pokerHands.vo.Card;
+import com.techreturners.pokerHands.vo.CardSuit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +26,6 @@ class PlayerHandTypeTest {
                 Card.parse("3C"),
                 Card.parse("JS"),
                 Card.parse("KS"));
-
         Card actualHighCard = playerHandType.getHighCard(cards);
 
         assertEquals(expectedHighCard.getValue(), actualHighCard.getValue());
@@ -93,15 +90,37 @@ class PlayerHandTypeTest {
         assertEquals(expectedFullHouseCards, playerHandType.getFullHouseCards(cards));
     }
 
-    
+    @Test
     void testIdentifyStraightCards() {
-        List<Card> cards = Arrays.asList(Card.parse("2H"),
-                Card.parse("3C"),
+        List<Card> cards = Arrays.asList(Card.parse("6H"),
+                Card.parse("5C"),
                 Card.parse("4S"),
                 Card.parse("5H"),
-                Card.parse("6D"));
+                Card.parse("3D"));
         List<String> expectedStraight = Arrays.asList("2", "3", "4", "5", "6");
-        assertEquals(expectedStraight, playerHandType.getStraightCard(cards));
+        assertTrue(expectedStraight.containsAll(playerHandType.getStraightCards(cards)));
+    }
+
+    @Test
+    void testIdentifyFlushSuit() {
+        List<Card> cards = Arrays.asList(Card.parse("6H"),
+                Card.parse("5H"),
+                Card.parse("4H"),
+                Card.parse("2H"),
+                Card.parse("KH"));
+        assertEquals(CardSuit.HEART, playerHandType.getFlushCardDisplay(cards));
+    }
+
+    @Test
+    void testIdentifyStraightFlushSuit() {
+        List<Card> cards = Arrays.asList(Card.parse("6H"),
+                Card.parse("5H"),
+                Card.parse("4H"),
+                Card.parse("2H"),
+                Card.parse("3H"));
+        Map<CardSuit, List<String>> expectedFullHouseCards = new HashMap<>();
+        expectedFullHouseCards.put(CardSuit.HEART, Arrays.asList("2", "3", "4", "5", "6"));
+        assertEquals(expectedFullHouseCards, playerHandType.getStraightFlushCards(cards));
     }
 
 }

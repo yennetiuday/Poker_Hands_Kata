@@ -1,7 +1,7 @@
 package com.techreturners.pokerHands.service;
 
-
 import com.techreturners.pokerHands.vo.Card;
+import com.techreturners.pokerHands.vo.CardSuit;
 import com.techreturners.pokerHands.vo.CardValue;
 
 import java.util.*;
@@ -14,6 +14,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     public static final Long THREE_OF_KIND = 3L;
     public static final Long FOUR_OF_KIND = 4L;
     public static final Integer TWO_PAIRS = 2;
+    public static final Integer ONE = 1;
 
     @Override
     public Card getHighCard(List<Card> hand) {
@@ -22,7 +23,8 @@ public class PlayerHandTypeImpl implements PlayerHandType{
 
     @Override
     public String getPairCard(List<Card> hand) {
-        return findPairs(hand).get(0);
+        List<String> pairs = findPairs(hand);
+        return !pairs.isEmpty() ? pairs.get(0) : null;
     }
 
     @Override
@@ -35,9 +37,10 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     @Override
     public String getThreeOfKindCard(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
-        return cardCounts.entrySet().stream()
+        List<String> threeOfKind = cardCounts.entrySet().stream()
                 .filter(e -> Objects.equals(e.getValue(), THREE_OF_KIND))
-                .map(Map.Entry::getKey).toList().get(0);
+                .map(Map.Entry::getKey).toList();
+        return !threeOfKind.isEmpty() ? threeOfKind.get(0) : null;
     }
 
     @Override
@@ -51,20 +54,50 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     @Override
     public String getFourOfKind(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
-        return cardCounts.entrySet().stream()
+        List<String> fourOfKind = cardCounts.entrySet().stream()
                 .filter(e -> Objects.equals(e.getValue(), FOUR_OF_KIND))
-                .map(Map.Entry::getKey).toList().get(0);
+                .map(Map.Entry::getKey).toList();
+        return !fourOfKind.isEmpty() ? fourOfKind.get(0) : null;
     }
 
     @Override
-    public String getStraightCard(List<Card> hand) {
+    public List<String> getStraightCards(List<Card> hand) {
+        Map<String, Long> cardCounts = countCards(hand);
+        Set<String> handValues = cardCounts.keySet();
+        List<List<String>> allPossibleStraights = allPossibleStraights();
+        for (List<String> straight : allPossibleStraights) {
+            if (new HashSet<>(straight).containsAll(handValues))
+                return straight;
+        }
+        return null;
+    }
+
+    @Override
+    public CardSuit getFlushCardDisplay(List<Card> hand) {
+        Map<CardSuit, Long> suitCountsMap = countSuits(hand);
+        Optional<CardSuit> suit = suitCountsMap.keySet().stream().findFirst();
+        if(suitCountsMap.size()==ONE && suit.isPresent()) {
+            return suit.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Map<CardSuit, List<String>> getStraightFlushCards(List<Card> hand) {
+        Map<CardSuit, List<String>> straightFlushMap = new HashMap<>();
+        CardSuit cardSuit = getFlushCardDisplay(hand);
+        List<String> straight = getStraightCards(hand);
+        if(!Objects.isNull(cardSuit) && !straight.isEmpty()){
+            straightFlushMap.put(cardSuit, straight);
+            return straightFlushMap;
+        }
         return null;
     }
 
     private Map<String, Long> countCards(List<Card> cards) {
         return cards.stream()
                 .map(Card :: getCardValue)
-                .map(CardValue::getDisplay)
+                .map(CardValue :: getDisplay)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
@@ -74,5 +107,26 @@ public class PlayerHandTypeImpl implements PlayerHandType{
                 .filter(e-> Objects.equals(e.getValue(), PAIR))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    private List<List<String>> allPossibleStraights() {
+        List<List<String>> allPossibleStraights = new ArrayList<>();
+        allPossibleStraights.add(Arrays.asList("A", "2", "3", "4", "5"));
+        allPossibleStraights.add(Arrays.asList("2", "3", "4", "5", "6"));
+        allPossibleStraights.add(Arrays.asList("3", "4", "5", "6", "7"));
+        allPossibleStraights.add(Arrays.asList("4", "5", "6", "7", "8"));
+        allPossibleStraights.add(Arrays.asList("5", "6", "7", "8", "9"));
+        allPossibleStraights.add(Arrays.asList("6", "7", "8", "9", "T"));
+        allPossibleStraights.add(Arrays.asList("7", "8", "9", "T", "J"));
+        allPossibleStraights.add(Arrays.asList("8", "9", "T", "J", "Q"));
+        allPossibleStraights.add(Arrays.asList("9", "T", "J", "Q", "K"));
+        allPossibleStraights.add(Arrays.asList("T", "J", "Q", "K", "A"));
+        return allPossibleStraights;
+    }
+
+    private Map<CardSuit, Long> countSuits(List<Card> cards) {
+        return cards.stream()
+                .map(Card :: getSuit)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 }
