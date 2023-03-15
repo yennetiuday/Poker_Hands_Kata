@@ -1,5 +1,7 @@
 package com.techreturners.pokerHands.vo;
 
+import com.techreturners.pokerHands.util.Util;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,10 +10,6 @@ public class Player {
 
     private String name;
     private List<Card> hand;
-
-    private static final String PLAYER_HANDS_SEPARATOR = " {2}";
-    private static final String HANDS_SEPARATOR = ": ";
-    private static final String CARDS_SEPARATOR = " ";
 
     public String getName() {
         return name;
@@ -28,18 +26,17 @@ public class Player {
 
     public static List<Player> parse(String hands) {
         List<Player> players = new ArrayList<>();
-        String[] playersHands = hands.split(PLAYER_HANDS_SEPARATOR);
+        String[] playersHands = hands.split(Util.PLAYER_HANDS_SEPARATOR);
         for (String playerHand : playersHands) {
-        String[] playerAndCards = playerHand.split(HANDS_SEPARATOR);
-        List<String> cards = Arrays.asList(playerAndCards[1].split(CARDS_SEPARATOR));
-        List<Card> handCards = new ArrayList<>();
-        for(String  card: cards) {
-        handCards.add(Card.parse(card));
-        }
-        players.add(new Player(playerAndCards[0], handCards));
+            String[] playerAndCards = playerHand.split(Util.HANDS_SEPARATOR);
+            List<String> cards = Arrays.asList(playerAndCards[1].split(Util.CARDS_SEPARATOR));
+            List<Card> handCards = new ArrayList<>();
+            for(String  card: cards) {
+                handCards.add(Card.parse(card));
+            }
+            players.add(new Player(playerAndCards[0], handCards));
         }
         return players;
-        }
-
+    }
 
 }

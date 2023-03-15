@@ -24,7 +24,7 @@ public class CardValue {
 
     }
 
-    public CardValue(int value) {
+    public  CardValue(int value) {
         this.value = value;
         switch (value) {
             case 2, 3, 4, 5, 6, 7, 8, 9 -> display = String.valueOf(value);

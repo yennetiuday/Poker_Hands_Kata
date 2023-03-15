@@ -1,5 +1,6 @@
 package com.techreturners.pokerHands.service;
 
+import com.techreturners.pokerHands.util.Util;
 import com.techreturners.pokerHands.vo.Card;
 import com.techreturners.pokerHands.vo.CardSuit;
 import com.techreturners.pokerHands.vo.CardValue;
@@ -9,12 +10,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PlayerHandTypeImpl implements PlayerHandType{
-
-    public static final Long PAIR = 2L;
-    public static final Long THREE_OF_KIND = 3L;
-    public static final Long FOUR_OF_KIND = 4L;
-    public static final Integer TWO_PAIRS = 2;
-    public static final Integer ONE = 1;
 
     @Override
     public Card getHighCard(List<Card> hand) {
@@ -30,7 +25,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     @Override
     public List<String> getTwoPairCard(List<Card> hand) {
         List<String> allPairs = findPairs(hand);
-        if(allPairs.size()==TWO_PAIRS) return allPairs;
+        if(allPairs.size()== Util.TWO_PAIRS) return allPairs;
         else return null;
     }
 
@@ -38,7 +33,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     public String getThreeOfKindCard(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
         List<String> threeOfKind = cardCounts.entrySet().stream()
-                .filter(e -> Objects.equals(e.getValue(), THREE_OF_KIND))
+                .filter(e -> Objects.equals(e.getValue(), Util.THREE_OF_KIND))
                 .map(Map.Entry::getKey).toList();
         return !threeOfKind.isEmpty() ? threeOfKind.get(0) : null;
     }
@@ -46,8 +41,8 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     @Override
     public Map<Long, String> getFullHouseCards(List<Card> hand) {
         Map<Long, String> fullHouse = new LinkedHashMap<>();
-        fullHouse.put(THREE_OF_KIND, getThreeOfKindCard(hand));
-        fullHouse.put(PAIR, getPairCard(hand));
+        fullHouse.put(Util.THREE_OF_KIND, getThreeOfKindCard(hand));
+        fullHouse.put(Util.PAIR, getPairCard(hand));
         return fullHouse;
     }
 
@@ -55,8 +50,9 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     public String getFourOfKind(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
         List<String> fourOfKind = cardCounts.entrySet().stream()
-                .filter(e -> Objects.equals(e.getValue(), FOUR_OF_KIND))
+                .filter(e -> e.getValue()==Util.FOUR_OF_KIND)
                 .map(Map.Entry::getKey).toList();
+//        cardCounts.entrySet().stream().filter(entry -> entry.getValue()==4).findFirst().get().getKey()
         return !fourOfKind.isEmpty() ? fourOfKind.get(0) : null;
     }
 
@@ -76,7 +72,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     public CardSuit getFlushCardDisplay(List<Card> hand) {
         Map<CardSuit, Long> suitCountsMap = countSuits(hand);
         Optional<CardSuit> suit = suitCountsMap.keySet().stream().findFirst();
-        if(suitCountsMap.size()==ONE && suit.isPresent()) {
+        if(suitCountsMap.size()==Util.ONE && suit.isPresent()) {
             return suit.get();
         }
         return null;
@@ -87,7 +83,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
         Map<CardSuit, List<String>> straightFlushMap = new HashMap<>();
         CardSuit cardSuit = getFlushCardDisplay(hand);
         List<String> straight = getStraightCards(hand);
-        if(!Objects.isNull(cardSuit) && !straight.isEmpty()){
+        if(!Objects.isNull(cardSuit) && Objects.nonNull(straight) && !straight.isEmpty()){
             straightFlushMap.put(cardSuit, straight);
             return straightFlushMap;
         }
@@ -104,7 +100,7 @@ public class PlayerHandTypeImpl implements PlayerHandType{
     private List<String> findPairs(List<Card> hand) {
         Map<String, Long> cardCounts = countCards(hand);
         return cardCounts.entrySet().stream()
-                .filter(e-> Objects.equals(e.getValue(), PAIR))
+                .filter(e-> Objects.equals(e.getValue(), Util.PAIR))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }

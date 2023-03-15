@@ -17,8 +17,8 @@ public enum CardSuit {
         this.label = label;
     }
 
-    public static Optional<CardSuit> of(String value) {
-        return Stream.of(CardSuit.values()).filter(cardSuit -> cardSuit.suit.equals(value)).findFirst();
+    public static Optional<CardSuit> of(String suit) {
+        return Stream.of(CardSuit.values()).filter(cardSuit -> cardSuit.suit.equals(suit)).findFirst();
     }
 
     @Override
