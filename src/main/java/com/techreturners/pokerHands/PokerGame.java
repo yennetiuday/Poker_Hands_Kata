@@ -136,16 +136,8 @@ public class PokerGame {
                 pokerHandType.equals(PokerHandType.THREE_OF_KIND) ||
                 pokerHandType.equals(PokerHandType.PAIR)) {
             winner = findWinnerWhenPlayerHandTypesEqualWitherFourOrThreeORTwoCardsMatch(pokerHandType, players);
-        } else if (pokerHandType.equals(pokerHandType.TWO_PAIRS)) {
-
         }
         return winner;
-    }
-
-    private void findWinnerWhenTwoPairsForBothPlayers(List<Player> players) {
-        String winner = null;
-
-//        playerHandType.getTwoPairCard();
     }
 
     private String findWinnerWhenPlayerHandTypesEqualWitherFourOrThreeORTwoCardsMatch(PokerHandType pokerHandType, List<Player> players) {
